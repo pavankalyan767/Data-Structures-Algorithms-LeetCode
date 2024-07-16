@@ -1,0 +1,44 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+
+        # approach
+        # perform inorder traversal 
+        # the elements will be in an increasing order 
+        # then use two pointers method to find the two sum of that array
+        # this will make the time complexity of the problem equal to O(n)
+        # perform inorder and then perform two pointer operation
+
+
+
+        res=[]
+        def inorder(root):
+            if root is None:
+                return 
+            inorder(root.left)
+            res.append(root.val)
+            inorder(root.right)
+        inorder(root)
+
+        left=0
+        right=len(res)-1
+
+        while left<right:
+            total=0
+            total=res[left]+res[right]
+            if total==k:
+                return True
+            if total<k:
+                left+=1
+            if total>k:
+                right-=1
+        return False
+            
+
+
+        
