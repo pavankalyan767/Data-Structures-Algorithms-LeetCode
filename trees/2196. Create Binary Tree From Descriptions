@@ -1,0 +1,45 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def createBinaryTree(self, descriptions: List[List[int]]) -> Optional[TreeNode]:
+
+        # Approach
+        # first make two sets inorder to find the parent node 
+        # then take difference and find the parent node 
+        # in the hashmap the keys are array numbers 
+        # and the values are the node objects 
+        # then make a hashmap initialize it with the parent node 
+        # iterate through the descriptions 
+        # desriptinos has parent,child,left or right
+        # check if parents in hashmap if not initialize it and add it 
+        # check if child in hashmap if not initialize it and add it
+        # then based on the third entry connect it to the left or right 
+        child=set()
+        par=set()
+        for i in descriptions:
+            child.add(i[1])
+            par.add(i[0])
+        child=list(child)
+        par=list(par)
+        for i in par :
+            if i not in child:
+                key=i
+                break
+        print(key)
+        tracker=defaultdict()
+
+        tracker[key] = TreeNode(key)
+        for i in descriptions:
+            if i[0] not in tracker:
+                tracker[i[0]]=TreeNode(i[0])
+            if i[1] not in tracker:
+                tracker[i[1]]=TreeNode(i[1])
+            if i[2]==0:
+                tracker[i[0]].right=tracker[i[1]]
+            elif i[2]==1:
+                tracker[i[0]].left=tracker[i[1]]
+        return tracker[key]
