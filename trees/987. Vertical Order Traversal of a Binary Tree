@@ -1,0 +1,49 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def verticalTraversal(self, root: Optional[TreeNode]) -> List[List[int]]:
+        if root is None:
+            return []
+
+        # approach 
+        # first use a level_itmes dictionary which has column to list mapping
+        # it contains row and node value 
+        # then use a que to store root,row,column values 
+        # while there are elements int he que keep on removing them and adding them 
+        # to the dict at their particular column 
+
+
+
+        level_items = defaultdict(list)
+        queue=deque([[root,0,0]])
+        min_col=float('inf')
+        max_col=-float('inf')
+        while queue:
+            node,row,col=queue.popleft()
+            if node:
+                min_col=min(min_col,col)
+                max_col=max(max_col,col)
+
+                level_items[col].append([node.val,row])
+
+                queue.append([node.left,row+1,col-1])
+                queue.append([node.right,row+1,col+1])
+        res=[]
+
+
+        # so now we have the min_col and max_col so iterate over them 
+        # items has the list of the elements 
+
+        for level in range(min_col,max_col+1):
+            items=level_items[level]
+            items.sort(key=lambda x:[x[1],x[0]])
+
+            fre=[]
+            for val,row in items:
+                fre.append(val)
+            res.append(fre)
+        return res
