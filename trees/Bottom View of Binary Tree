@@ -1,0 +1,30 @@
+import collections 
+class Solution:
+    
+    #Function to return a list of nodes visible from the top view 
+    #from left to right in Binary Tree.
+    # approach same as the vertical order traversing 
+    # but while return the elements that will come up in the list 
+    # you can add only element that appears last in that column 
+    # use items[-1][1]
+    def bottomView(self,root):
+        
+        level_items=collections.defaultdict(list)
+        q = collections.deque([[root,0,0]])
+        min_col=float('inf')
+        max_col=-float('inf')
+        while q:
+            node,row,col = q.popleft()
+            
+            if node:
+                level_items[col].append([row,node.data])
+                q.append([node.left,row+1,col-1])
+                q.append([node.right,row+1,col+1])
+        max_col=max(list(level_items.keys()))
+        min_col=min(list(level_items.keys()))
+        res=[]
+        for level in range(min_col,max_col+1):
+            items=level_items[level]
+            
+            res.append(items[-1][1])
+        return res
