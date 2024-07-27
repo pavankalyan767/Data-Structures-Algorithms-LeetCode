@@ -1,0 +1,27 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+
+        # Approach
+        # Find the height of the tree 
+        # while finding the height we also get access to the height of left longest
+        # height and right longest height so at each node level append the sum of the 
+        # left longest and right longest keep on doing this at every level 
+        # at the end return the maximum element of the array which is the longest path
+        arr=[]
+        def height(root):
+            if root is None:
+                return 0
+            
+            left = height(root.left)
+            right = height(root.right)
+            arr.append(left+right)
+            return 1+max(left,right)
+        height(root)
+        print(arr)
+        return max(arr)
