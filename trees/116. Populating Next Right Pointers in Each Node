@@ -1,0 +1,42 @@
+"""
+# Definition for a Node.
+class Node:
+    def __init__(self, val: int = 0, left: 'Node' = None, right: 'Node' = None, next: 'Node' = None):
+        self.val = val
+        self.left = left
+        self.right = right
+        self.next = next
+"""
+
+class Solution:
+    def connect(self, root: 'Optional[Node]') -> 'Optional[Node]':
+
+        # Approach 
+        # perform a bfs(level order traversal)
+        # after performing it iterate through the array containing level order traversal
+        # check if the element is the last element in that particular level if yes 
+        # it's right pointer should be null 
+        # if no then connect it's right pointer to the element next to it 
+
+        q = deque()
+        q.append(root)
+        res=[]
+        while q:
+            qlen=len(q)
+            level=[]
+            for i in range(qlen):
+                node=q.popleft()
+                if node:
+                    level.append(node)
+                    q.append(node.left)
+                    q.append(node.right)
+
+            if level:
+                res.append(level)
+        for each in res:
+            for i in range(len(each)):
+                if len(each)-1==i:
+                    each[i].next=None
+                else:
+                    each[i].next=each[i+1]
+        return root
