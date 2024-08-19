@@ -1,0 +1,44 @@
+#User function Template for python3
+
+class Solution:
+    def minimumEnergy(self, height, n):
+        
+        dp=[-1]*(n)
+        dp[0]=0
+        # approach 
+        # here to go from any index to 0th index the cost is 0
+        
+        # def dfs(index):
+        #     if index==0:
+        #         return 0
+        #     if dp[index]!=-1:
+        #         return dp[index]
+        #     left = dfs(index-1)+abs(height[index]-height[index-1])
+        #     if index>1:
+        #         right = dfs(index-2)+abs(height[index]-height[index-2])
+        #     else:
+        #         right=float('inf')
+        #     dp[index]=min(left,right)
+        #     return min(left,right)
+        # a=dfs(n-1)
+        # return a
+        for index in range(1,len(height)):
+            fs=dp[index-1]+abs(height[index]-height[index-1])
+            ss=float('inf')
+            if index>1:
+                ss=dp[index-2]+abs(height[index]-height[index-2])
+            dp[index]=min(fs,ss)
+        return dp[-1]
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        n = int(input())
+        height = list(map(int, input().split()))
+        ob = Solution()
+        print(ob.minimumEnergy(height, n))
+# } Driver Code Ends
