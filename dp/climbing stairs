@@ -1,0 +1,26 @@
+class Solution:
+    #approach 
+    # so there are two options to do this 
+    # either go one step or 2 steps 
+    # so at each index go index back and 2 index back 
+    # when you hit the rock bottom ie at the 0th step or 1st step you return 1 stating that you are done 
+    # then from that node you add left and right then memoize it and return it 
+    def climbStairs(self, n: int) -> int:
+        dp=[-1]*(n+1)
+        dp[0]=1
+        dp[1]
+        def climber(index):
+            if dp[index]!=-1:
+                return dp[index]
+            if index==0:
+                return 1
+            if index==1:
+                return 1
+            left = climber(index-1)
+            right = climber(index-2)
+            dp[index]=left+right
+            return left+right
+        print(dp)
+        return climber(n)
+
+                
