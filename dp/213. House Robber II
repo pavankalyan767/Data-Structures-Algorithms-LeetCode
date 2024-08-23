@@ -1,0 +1,52 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+
+        if len(nums)==1:
+            return nums[0]
+        dp = [-1]*len(nums)
+        # def dfs(index,arr):
+        #     if index==0:
+        #         return arr[0]
+        #     if index<0:
+        #         return 0
+        #     if dp[index]!=-1:
+        #         return dp[index]
+            
+        #     pick = dfs(index-2,arr)+arr[index]
+        #     notpick = dfs(index-1,arr)+0
+        #     dp[index] = max(pick,notpick)
+        #     return dp[index]
+        
+        # a = dfs(len(nums)-2,nums[1:])
+        # dp = [-1]*len(nums)
+        # b = dfs(len(nums)-2,nums[:-1])
+        # return max(a,b)
+
+
+        # Tabulation Approach 
+        # Create two dp arrays since we are computing the optimal solution using 2 arrays
+        # one excluding the 1st element and one excluding the last element 
+        # base case if len==1 or len==2 return max of the elements present 
+        # else same as the previous problem logic remains the same 
+        dp1=[-1]*(len(nums)-1)
+        dp2=[-1]*(len(nums)-1)
+        if len(nums)==2:
+            return max(nums)
+        def solve(arr,dp):
+            dp[0] = arr[0]
+            dp[1] = max(arr[0],arr[1])
+
+            for index in range(2,len(arr)):
+                pick = dp[index-2]+arr[index]
+                notpick = dp[index-1]+0
+                dp[index]=max(pick,notpick)
+            return dp[-1]
+        a = solve(nums[1:],dp1)
+        b = solve(nums[:-1],dp2)
+        return max(a,b)
+
+            
+
+
+
+        
