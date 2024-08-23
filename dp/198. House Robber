@@ -1,0 +1,58 @@
+class Solution:
+    def rob(self, nums: List[int]) -> int:
+        # Approach
+        # Base case: if we reach the zeroth index then return first element of the array 
+        # if the index goes less than 0 then return 0
+        # check if solution already exists in the dp array 
+
+        # first initialize the dp array with -1
+        # in this problem we have two choices 
+        # either to pick an index or don't pick it 
+        # if we pick one index we shouldn't pick the adjacent one 
+        # if we pick one index then we should add that money or profit
+        # if we don't pick it then we can consider the adjacent element 
+        # if we don't pick it then we dno't have to add the profit for it 
+
+        # at each node or index choose the optimal solution ie the maximum value 
+        # of picking or notpicking of a particular element 
+        
+        dp = [-1]*len(nums)
+        
+        def dfs(index):
+            if index==0:
+                return nums[0]
+            if index<0:
+                return 0
+            if dp[index]!=-1:
+                return dp[index]
+            
+            pick = dfs(index-2)+nums[index]
+            notpick = dfs(index-1)+0
+            dp[index] = max(pick,notpick)
+            return dp[index]
+        #return dfs(len(nums)-1)
+
+        # Writing a tabulation apparoch for this problem 
+        # edge cases 
+        # length of number ==1 return the element 
+        # Edge case nums can have only two elements so dp[1] is the max of 0th and 1st elemnt 
+        # then iterate from index 2 
+        # for pick take maximum profit from index -2 ie not adgacent 
+        # for not pick take profit from index-1 ie adjacent 
+        # update the max profit at that particular index 
+        if len(nums)==1:
+            return nums[0]
+        dp[0]=nums[0]
+        dp[1] = max(nums[0],nums[1])
+        for index in range(2,len(nums)):
+            pick = dp[index-2]+nums[index]
+            notpick = dp[index-1]+0
+            dp[index]=max(pick,notpick)
+        print(dp)
+        return dp[-1]
+
+
+
+        
+        
+        
