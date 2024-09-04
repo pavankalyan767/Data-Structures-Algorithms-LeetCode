@@ -1,0 +1,51 @@
+class Solution:
+    def uniquePaths(self, m: int, n: int) -> int:
+
+        # Approach 
+        # Initialize a dp array first consisitng n columns and n rows 
+        # so first the base case
+        # in the base case if i==0 and j==0 since we are going from end to start of matrix
+        # then return 1 way 
+        # if i or j becomes less than 0 then return 0
+        # then at each index perform all possible operations 
+        # operations that can be performed here are going left and going up 
+        # do those and add those up and store it in dp array 
+
+        dp = [[-1]*n for _ in range(m)]
+        
+        # def solve(i,j):
+        #     if dp[i][j]!=-1:
+        #         return dp[i][j]
+        #     if i==0 and j==0:
+        #         return 1
+        #     if i<0 or j<0:
+        #         return 0
+            
+        #     up = solve(i-1,j)
+        #     left = solve(i,j-1)
+        #     dp[i][j]=up+left
+        #     return up+left
+        # return solve(m-1,n-1)
+
+        
+        
+        # Tabulation 
+        # Step 1: store the base case 
+        # step 2: represent all the states using for loops 
+        # step 3: copy from recursion 
+
+        dp[0][0]=1
+
+        for i in range(m):
+            for j in range(n):
+                up=0
+                left=0
+                if i==0 and j==0:
+                    dp[0][0]=1
+                else:
+                    if i>0:
+                        up = dp[i-1][j]
+                    if j>0:    
+                        left = dp[i][j-1]
+                    dp[i][j] = up+left
+        return dp[m-1][n-1]
