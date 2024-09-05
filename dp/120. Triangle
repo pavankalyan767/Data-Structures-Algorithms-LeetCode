@@ -1,0 +1,44 @@
+class Solution:
+    def minimumTotal(self, triangle: List[List[int]]) -> int:
+        
+        dp = [[-1]*i for i in range(1,len(triangle)+1)]
+
+        # def solve(i,j):
+        #     if dp[i][j]!=-1:
+        #         return dp[i][j]
+        #     if i==len(triangle)-1:
+        #         return triangle[i][j]
+
+        #     down = solve(i+1,j)+triangle[i][j]
+        #     diagonal = solve(i+1,j+1)+triangle[i][j]
+        #     dp[i][j] = min(down,diagonal)
+        #     return min(down,diagonal)
+        # print(dp)
+        # return solve(0,0)
+
+        # Approach 
+        # here in thsi problem for recursion i have used top to bottom 
+        # so for tabulation i have to use reverse approach ie bottom to top 
+        # step1: so the number of base cases i'll have is equal to no of cols in last row 
+        # step2: then since i went on increasing i and j i will be decreasing them ie 
+        # reverse directoin in tabulation 
+        # step 3: same process of optimization is performed 
+        # but here in each step it checks form the below row and column but starts from 
+        # last but oneth row 
+        row = len(triangle)
+        lastrow = len(triangle[-1])
+
+        for j in range(lastrow):
+            dp[lastrow-1][j] = triangle[lastrow-1][j]
+
+        for i in range(lastrow-2,-1,-1):
+            for j in range(i,-1,-1):
+                down = triangle[i][j] + dp[i+1][j]
+                diagonal = triangle[i][j] + dp[i+1][j+1]
+                dp[i][j] = min(down,diagonal)
+
+        
+        return dp[0][0]
+        print(dp)
+        return 1
+        
