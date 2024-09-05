@@ -1,0 +1,54 @@
+class Solution:
+    def minPathSum(self, grid: List[List[int]]) -> int:
+        
+        cost=[]
+        m = len(grid)
+        n = len(grid[0])
+        dp = [[-1]*len(grid[0]) for _ in range(len(grid))]
+        # def solve(i,j):
+            
+        #     if dp[i][j]!=-1:
+        #         return dp[i][j]
+            
+        #     if i==0 and j==0:
+        #         return grid[0][0] 
+        #     if i<0 or j<0:
+        #         return float('inf')
+        #     up = solve(i-1,j) + grid[i][j]
+        #     left = solve(i,j-1) + grid[i][j]
+        #     dp[i][j] = min(up,left)
+        #     return min(up,left)
+            
+        # return solve(len(grid)-1,len(grid[0])-1)
+        
+        # Approach 
+        # Step 1: write down the base case ie i and j==0 
+        # next iterate on all indexes ie i,j 
+        # perform operations 
+        # here up will be assigned the cell value and same with down 
+        # since if they don't have any previous way ie in dp array 
+        # example if i==0 and j==0,1,2 
+        # i can't go check what happened at previous i since it is 0 ,it'll become -1
+        # if any of those aren't selected then assign them to float since we don't want to take it 
+        
+
+        dp[0][0] = grid[0][0]
+
+        for i in range(m):
+            for j in range(n):
+                up = grid[i][j]
+                left = grid[i][j]
+                if i==0 and j==0:
+                    dp[i][j]=grid[0][0]
+                else:
+                    if i>0:
+                        up = dp[i-1][j]+grid[i][j]
+                    else:
+                        up = float('inf')
+                    
+                    if j>0:
+                        left = dp[i][j-1]+grid[i][j]
+                    else:
+                        left = float('inf')
+                    dp[i][j]=min(up,left)
+        return dp[m-1][n-1]
