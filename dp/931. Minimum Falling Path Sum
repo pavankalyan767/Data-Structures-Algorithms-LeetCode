@@ -1,0 +1,71 @@
+class Solution:
+    def minFallingPathSum(self, matrix: List[List[int]]) -> int:
+        # Approach 
+        # I'll be going from the last row to the first row 
+        # Step 1: base case when i hit i==0 then return what ever index i am in 
+        # if i ie row goes below 0 or j goes below 0 or more than no of cols return inf
+        # step 2: perform every thing on that index 
+        # go up upleft and upright 
+        # step 3: each time this is done take the minimum of this and store it in dp array
+        
+        dp = [[-1]*len(matrix[0]) for _ in range(len(matrix))]
+        m = len(matrix[0])
+
+        # def solve(i,j):
+            
+        #     if i<0 or j<0 or j>=m:
+        #         return float('inf')
+            
+        #     if dp[i][j]!=-1:
+        #         return dp[i][j]
+
+        #     if i==0:
+        #         return matrix[0][j]
+
+            
+
+        #     direct_down = solve(i-1,j) + matrix[i][j]
+        #     down_left = solve(i-1,j-1) + matrix[i][j] 
+        #     down_right = solve(i-1,j+1) + matrix[i][j] 
+        #     dp[i][j] = min(direct_down,down_left,down_right)
+        #     return min(direct_down,down_left,down_right)
+
+
+        # for j in range(m):
+        #     solve(len(matrix)-1,j)
+        
+        # return min(dp[len(matrix)-1])
+
+        
+
+
+        # Approach 
+        # step 1 : base case here looking from memoization base case is multiple 
+        # it can be any col in the first row 
+        # so populate the dp array with the columns of the first row 
+        # step 2 : now perform all operations on these indexes 
+        # but the catch is make sure i,j don't go out of bound 
+        # step 3 : store the optimal solution in dp array 
+        # then return the minimum value in the last row of the dp array 
+
+        for j in range(m):
+            dp[0][j] = matrix[0][j]
+        
+        for i in range(1,len(matrix)):
+            for j in range(0,m):
+
+                direct_down = dp[i-1][j] + matrix[i][j]
+                if j>0:
+                    down_left = dp[i-1][j-1] + matrix[i][j]
+                else:
+                    down_left = float('inf')
+                if j<m-1:
+                    down_right = dp[i-1][j+1] + matrix[i][j]
+                else:
+                    down_right = float('inf')
+                dp[i][j] = min(direct_down,down_left,down_right)
+        
+        return min(dp[len(matrix)-1])
+        
+        
+        
