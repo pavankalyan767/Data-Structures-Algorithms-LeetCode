@@ -1,0 +1,85 @@
+class Solution:
+    def canPartition(self, nums: List[int]) -> bool:
+
+        # Approach 
+        # calculate the sum of all the elements in that array 
+        # if it is odd then we can't make two subsets which will have half sum 
+        # so if it is odd return false
+        # if it is even then divide by 2 and then search for a subset which has 
+        # a target sum of sum of whole array by 2 
+        # rest all is the same approach fromt he previous problem 
+        
+        
+        target = sum(nums)
+        if target%2!=0:
+            return False
+        target=target//2
+        dp = [[False]*(target+2) for _ in range(len(nums)+1)]
+
+
+        def solve(ind,target):
+            if target==0:
+                return True
+            
+            
+            if ind==0:
+                return target==nums[0]
+
+            if dp[ind][target]==True:
+                return True
+            if dp[ind][target]==False:
+                return False
+
+
+            take  = False
+            if target>=nums[ind]:
+                take = solve(ind-1,target-nums[ind])
+                
+            not_take = solve(ind-1,target)
+
+            if take==True or not_take==True:
+                dp[ind][target]=True
+                return True
+            else:
+                dp[ind][target]=False
+                return False
+
+        return solve(len(nums)-1,target//2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        for i in range(len(nums)):
+            dp[i][0] =True
+        if target>=nums[0]:
+            dp[0][nums[0]] = True
+        
+        
+        for ind in range(1,len(nums)):
+            for tar in range(target+1):
+
+                take = False
+                if tar>=nums[ind]:
+                    take = dp[ind-1][tar-nums[ind]]
+                not_take = dp[ind-1][tar]
+                dp[ind][tar]=take or not_take
+        return dp[len(nums)-1][target]
+
+            
+
+
+
+            
+                
+        
