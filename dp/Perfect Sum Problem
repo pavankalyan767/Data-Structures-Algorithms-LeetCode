@@ -1,0 +1,96 @@
+#User function Template for python3
+class Solution:
+	def perfectSum(self, arr, n, sum):
+		
+		nums=arr
+		
+		dp = [[-1]*(sum+1) for _ in range(n)]
+		mod = 10**9+7
+		target = sum
+		
+		# Approach 
+		
+		# step1: base case
+		# if i approach index 0 if target is 0 and the number in the 
+		# array at that index is also zero then return 2 
+		# since there are two ways to compute solution in that 
+		# situation i can either take that zero or not take it 
+		# so i get two solutions 
+		# if target==0 or target is equal to the ind=0 return 1
+		# else return 0
+		# do all stuffs on that particular index dont forget to 
+		# take mod
+		
+# 		def solve(ind,target):
+		    
+		    
+# 		    if ind==0:
+# 		        if target==0 and nums[0]==0:
+# 		            return 2
+# 		        if target==0 or target==nums[0]:
+# 		            return 1
+# 		      return 0
+		        
+		    
+		    
+		    
+# 		    not_take= solve(ind-1,target)%mod
+# 		    take = 0
+# 		    if nums[ind]<=target:
+# 		        take=solve(ind-1,target-nums[ind])%mod
+# 		    dp[ind][target] = take+not_take
+# 		    return dp[ind][target]
+		    
+# 	    return solve(n-1,sum)
+	    
+	    
+	    # Note : while tabulating set all vals to 0 not -1
+	    
+	    # step1 : initialize a dp array with 0 not 1 
+	    # take base case from prev problem ie target==0 
+	    # means there is one way 
+	    # then at ind and target dp array return 1
+	    # case when 0 is at ind 0 then mark it as 2 
+	    # since there are 2 ways 
+	    #next start ind from 1 and target from 0
+	    dp = [[0]*(sum+1) for _ in range(n)]
+	    
+	    for i in range(len(arr)):
+	        dp[i][0]=1
+	    
+	    if arr[0]<=target:
+	        dp[0][arr[0]]=1
+	    
+	    if arr[0]==0:
+	        dp[0][0] =2
+	        
+	    
+	    for ind in range(1,n):
+	        for tar in range(0,target+1):
+	            take = 0
+	            not_take = dp[ind-1][tar]
+	            if nums[ind]<=tar:
+	                take = dp[ind-1][tar-arr[ind]]
+	            
+	            dp[ind][tar] = (take+not_take)%mod
+	    result = dp[n-1][target]
+	   
+	    return result
+	    
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+	T=int(input())
+	for i in range(T):
+		n,sum = input().split()
+		n,sum = int(n),int(sum)
+		arr = [int(x) for x in input().split()]
+		ob = Solution()
+		ans = ob.perfectSum(arr,n,sum)
+		print(ans)
+
+# } Driver Code Ends
