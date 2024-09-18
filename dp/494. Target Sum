@@ -1,0 +1,50 @@
+class Solution:
+    def findTargetSumWays(self, nums: List[int], target: int) -> int:
+        mod = 1e9
+
+        dp = {}
+
+        # Approach 
+        # using neetcode's approach 
+        # starting from last index 
+        # if index==size of array and target = total return 1
+        # if index ,total tuple in dp then return it 
+        # for plus increment index and add number at that particular index 
+        # for minus increment and subtract 
+        # return dp at tuple (index,total)
+
+        # def solve(index,total):
+
+        #     if index==len(nums):
+        #         return total==target
+            
+        #     if (index,total) in dp:
+        #         return dp[(index,total)]
+
+        #     plus = solve(index+1,total+nums[index])
+        #     minus = solve(index+1,total-nums[index])
+
+        #     dp[(index,total)] = plus+minus
+        #     return dp[(index,total)]
+
+        # return solve(0,0)
+
+        # Approarch 
+        # step 1 fill the base case vals 
+        # step 2 start from index=len(nums)-1 
+        # step 3 since there are a lot of possible total values the range shuld 
+        # be negative sum to positive sum 
+        # use dp if that tuple(key) exists then return that value else return 0
+        # finally return value at tuple (0,0) if it exists else return 0
+
+        dp[(len(nums),target)]=1
+
+        for index in range(len(nums)-1,-1,-1):
+            for total in range(-sum(nums),sum(nums)+1):
+                plus = 0
+                minus = 0
+                
+                plus = dp.get((index+1,total+nums[index]),0)
+                minus = dp.get((index+1,total-nums[index]),0)
+                dp[(index,total)] = plus+minus
+        return dp.get((0,0),0)
