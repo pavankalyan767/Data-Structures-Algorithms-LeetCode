@@ -1,0 +1,52 @@
+class Solution:
+    def longestCommonSubsequence(self, text1: str, text2: str) -> int:
+        
+        dp = {}
+        # Approach 
+        # step1 : base case 
+        # if i or j go below 0 it means the end of the string 
+        # step 2: expressing everything in terms of index since we need 
+        # two pointers since we have two strings we'll use i and j 
+        # so when there is a match of chars then add 1 and go back i-1 , j-1
+        # if there is not match then there might be a match for a particular 
+        # char at i with j-1 or vice versa so there should be two possibilities 
+        # i-1,j and i,j-1
+
+        def solve(i,j):
+            if i<0 or j<0:
+                return 0
+            if (i,j) in dp:
+                return dp[(i,j)]
+            take = -1e9
+            if text1[i]==text2[j]:
+                take = 1 + solve(i-1,j-1)
+
+            not_take = 0 + max(solve(i-1,j),solve(i,j-1))
+            dp[(i,j)] = max(take,not_take)
+            return max(take,not_take)
+        return solve(len(text1)-1,len(text2)-1)
+
+
+        # Approach 
+        # while memoizing this 
+        # i should start from 0 till lenght of the first stiring 
+        # j should start from 0 till length of the second string 
+        # so if a tuple (i,j) doens't exist then return 0 that's taken care by 
+        # dictionary .get function by passing 0 as an argument 
+        #finally return the value at tuple (length of first string , length of second string )
+        
+
+
+        for i in range(len(text1)):
+            for j in range(len(text2)):
+
+                take = -1e9
+                if text1[i]==text2[j]:
+                    take = 1 + dp.get((i-1,j-1),0)
+                not_take = 0 + max(dp.get((i-1,j),0),dp.get((i,j-1),0))
+                dp[(i,j)] = max(take,not_take)
+        
+        return dp.get((len(text1)-1,len(text2)-1),0)
+
+
+        
