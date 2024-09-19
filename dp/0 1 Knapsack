@@ -1,0 +1,33 @@
+def maxProfit(values, weights, n, w):
+
+    dp = {}
+    
+    def solve(ind,weight_left):
+
+        # this is similar to unbounded knapsack but the only thing is i can't take 
+        # multiple instances of item at 0th index 
+        # so i return values[0]
+        # or return 0 if the weight left is less than weight of item at index 0
+
+        if ind==0:
+            if weights[0]<=weight_left:
+                return values[0]
+            else:
+                return 0
+        
+
+        if (ind,weight_left) in dp:
+            return dp[(ind,weight_left)]
+
+        take = -1e9
+
+        not_take = 0+solve(ind-1,weight_left)
+
+        if weights[ind]<=weight_left:
+            take = values[ind] + solve(ind-1,weight_left-weights[ind])
+
+        dp[(ind,weight_left)] = max(take,not_take)
+        return max(take,not_take)
+
+    return solve(len(values)-1,w)
+        
