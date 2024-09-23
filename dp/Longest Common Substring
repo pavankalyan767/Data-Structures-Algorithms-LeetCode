@@ -1,0 +1,48 @@
+#User function Template for python3
+
+class Solution:
+    def longestCommonSubstr(self, str1, str2):
+        
+        
+        
+        
+        # Approach 
+        # just like the previous problem 
+        # step1 make the dp array or dictionary 
+        # look into the patterns 
+        # ithere is amatch then check i-1 and j-1 and add that value 
+        # if there was no answer in i-1 and j-1 then it returns 0 
+        # so this will be the first char which can be used for the substring 
+        # if there is no match then we make it zero 
+        
+        
+        
+        dp = {}
+        
+        
+        ans = 0
+        for i in range(len(str1)):
+            for j in range(len(str2)):
+                
+                if str1[i]==str2[j]:
+                    dp[(i,j)] = 1 + dp.get((i-1,j-1),0)
+                    ans = max(ans,dp[(i,j)])
+                    
+                else:
+                    dp[(i,j)]=0
+                    
+        return ans
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+    t = int(input())
+    for _ in range(t):
+        S1 = input().strip()
+        S2 = input().strip()
+        ob = Solution()
+        print(ob.longestCommonSubstr(S1, S2))
+
+# } Driver Code Ends
