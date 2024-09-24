@@ -1,0 +1,44 @@
+class Solution:
+    def longestPalindromeSubseq(self, s: str) -> int:
+
+        # Approach 
+        # reverse the string that is given 
+        # the pallindrome subsequence will remain intact 
+        # so now find the longest common subsequence between those two strings
+        
+
+
+
+
+        dp = {}
+        s2 = s[::-1]
+
+        # def solve(i,j):
+
+        #     if i<0 or j<0:
+        #         return 0
+        #     if (i,j) in dp:
+        #         return dp[(i,j)]
+        #     take = -1e9
+        #     if s[i]==s2[j]:
+        #         take = 1+solve(i-1,j-1)
+
+        #     not_take = max(solve(i-1,j),solve(i,j-1))
+        #     dp[(i,j)] = max(take,not_take)
+        #     return dp[(i,j)]
+        # return solve(len(s)-1,len(s)-1)
+
+        for i in range(len(s)):
+            for j in range(len(s)):
+                take = -1e9
+                if s[i]==s2[j]:
+                    take = 1+ dp.get((i-1,j-1),0)
+
+                not_take = max(dp.get((i-1,j),0),dp.get((i,j-1),0))
+                dp[(i,j)] = max(take,not_take)
+        return dp[(len(s)-1,len(s)-1)]
+
+        
+
+            
+        
