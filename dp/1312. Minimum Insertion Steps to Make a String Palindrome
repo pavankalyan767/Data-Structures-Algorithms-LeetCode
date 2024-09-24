@@ -1,0 +1,32 @@
+class Solution:
+    def minInsertions(self, s: str) -> int:
+
+
+        # Approach 
+        # same as LCS 
+        # first step find the length of the pallindrome in the given strnig 
+        # using LCS later calculate len(string) - longest pallindrome sequence
+        # so these are the extra letters that should be added inorder to make the 
+        # whole string a pallindrome
+
+
+
+        dp = {}
+        s1 = s[::-1]
+        def solve(i,j):
+
+            if i<0 or j<0:
+                return 0
+
+            if (i,j) in dp:
+                return dp[(i,j)]
+
+            take = -1e9
+            if s[i]==s1[j]:
+                take = 1+solve(i-1,j-1)
+            not_take = max(solve(i-1,j),solve(i,j-1))
+            dp[(i,j)]  = max(take,not_take)
+            return dp[(i,j)]
+
+        x = solve(len(s)-1,len(s)-1)
+        return len(s)-x
