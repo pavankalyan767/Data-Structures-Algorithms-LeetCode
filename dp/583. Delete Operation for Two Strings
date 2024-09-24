@@ -1,0 +1,26 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        dp = {}
+
+        # Approach 
+        # use LCS 
+
+
+        def solve(i,j):
+            if i<0 or j<0:
+                return 0
+
+            if (i,j) in dp:
+                return dp[(i,j)]
+            take = -1e9
+
+            if word1[i]==word2[j]:
+                take = 1 + solve(i-1,j-1)
+
+            not_take = max(solve(i-1,j),solve(i,j-1))
+
+            dp[(i,j)] = max(take,not_take)
+            return dp[(i,j)]
+        x = solve(len(word1)-1,len(word2)-1)
+        
+        return (len(word1)+len(word2)-2*x)
