@@ -1,0 +1,65 @@
+class Solution:
+    def shortestCommonSupersequence(self, str1: str, str2: str) -> str:
+        dp = {}
+
+
+        # Approach 
+        # use LCS 
+        # compute the dp array or dictaionary that is required
+        # later using that dictionary 
+        # start from the bottom right of the dicationary 
+        # if values match at that index then include them into ans 
+        # if they dont then i have two choices go up or left 
+        # go to the side which has maximum value 
+        # and then before going up add str1[i] to the ans 
+        # just like that before going left add str2[j] to the ans 
+        # so keep on doing that and later after coming out of the while 
+        # loop if there are other indexes remaining in i or j 
+        # write two for loops for those also 
+
+    
+
+        
+
+        def solve(i,j):
+            if i<0 or j<0:
+                return 0
+
+            if (i,j)  in dp:
+                return dp[(i,j)]
+
+            take = -1e9
+
+            if str1[i]==str2[j]:
+                take = 1 +  solve(i-1,j-1)
+
+            not_take = max(solve(i-1,j),solve(i,j-1))
+
+            dp[(i,j)] = max(take,not_take)
+            return dp[(i,j)]
+        solve(len(str1)-1,len(str2)-1)
+
+        ans = ''
+        i = len(str1)-1
+        j = len(str2)-1
+        while i>=0 and j>=0:
+
+            if str1[i] == str2[j]:
+                ans+=str1[i]
+                i-=1
+                j-=1
+            
+            elif dp.get((i-1,j),-1)>dp.get((i,j-1),-1):
+                ans+=str1[i]
+                i-=1
+            else:
+                ans+=str2[j]
+                j-=1
+
+        while i>=0:
+            ans+=str1[i]
+            i-=1
+        while j>=0:
+            ans+=str2[j]
+            j-=1
+        return ans[::-1]
