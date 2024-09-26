@@ -1,0 +1,56 @@
+class Solution:
+    def maxProfit(self, k: int, prices: List[int]) -> int:
+        dp = {}
+
+        # Approach 
+        # at each index i can either buy or sell 
+        # if i buy i subtract prices at that index 
+        # and let the recuriosn contionue 
+        # since i can't buy more than k times 
+        # i use the variable times to keep track of the 
+        # number of times i have done transactions 
+        # and the base cases are when i reach the end of the 
+        # array return 0
+        # when i reach the maximum number of times 
+        # return 0
+
+        def solve(ind,bought,times):
+
+            if ind>=len(prices):
+                return 0
+
+            if times==k:
+                return 0
+            if (ind,bought,times) in dp:
+                return dp[(ind,bought,times)]
+
+            if bought==0:
+                buy = -prices[ind] + solve(ind+1,1,times)
+                not_buy = solve(ind+1,bought,times)
+                dp[(ind,bought,times)] = max(buy,not_buy)
+                return dp[(ind,bought,times)]
+            if bought==1:
+                sell = prices[ind] + solve(ind+1,0,times+1)
+                not_sell = solve(ind+1,bought,times)
+                dp[(ind,bought,times)] = max(sell,not_sell)
+                return dp[(ind,bought,times)]
+        return solve(0,0,0)
+
+
+        for bought in range(0,2):
+            for times in range(0,k):
+                dp[(len(prices),bought,times)] = 0
+
+        for ind in range(len(prices)-1,-1,-1):
+            for bought in range(0,2):
+                for times in range(0,k):
+                    if bought==0:
+                        buy = -prices[ind] + dp.get((ind+1,1,times))
+                        not_buy = dp.get((ind+1,bought,times))
+                        dp[(ind,bought,times)] = max(buy,not_buy)
+
+                    if bought==1:
+                        sell = prices[ind] + dp.get((ind+1,0,times+1),0)
+                        not_sell = dp.get((ind+1,bought,times))
+                        dp[(ind,bought,times)] = max(sell,not_sell)
+        return dp.get((0,0,0))
