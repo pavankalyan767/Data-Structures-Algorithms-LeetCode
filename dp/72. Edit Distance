@@ -1,0 +1,63 @@
+class Solution:
+    def minDistance(self, word1: str, word2: str) -> int:
+        dp = {}
+        
+        # Approach 
+        # I can have two pointers for each string 
+        # i and j 
+        # i starts at end of first string 
+        # j start at end of second string 
+        # if there is a match then it didn't cost me any operations 
+        # so i just go back i-1,j-1
+        # or else i got 3 operations that i can do at a cost 
+        # and later minimize them 
+        # or else i can replace the string to match the string 
+        # now it becomes i-1,j-1
+        # if i insert then string length increases by 1 then i moves 
+        # i+1 then after match comes back to i itself 
+        # but j becomes j-1
+        # if there is a delete then i remove str[i] so i becomes i-1
+        # and j stays there itself since there is not match 
+        # and from these three operations i need to take the minimum one
+
+
+        def solve(i,j):
+            if j<0:
+                return i
+
+            if i<0:
+                return j
+
+            if (i,j) in dp:
+                return dp[(i,j)]
+
+            if word1[i]==word2[j]:
+                dp[(i,j)]=solve(i-1,j-1)
+
+            else:
+                dp[(i,j)] = 1 + min(solve(i-1,j-1),solve(i-1,j),solve(i,j-1))
+            
+            return dp[(i,j)]
+        return solve(len(word1)-1,len(word2)-1)+1
+
+
+
+        # since i can't represent negative vals of i and j in tabulation 
+        # i will use 1 based indexing 
+        
+        for i in range(0,len(word1)+1):
+            dp[(i,0)] = i
+        
+        for j in range(0,len(word2)+1):
+            dp[(0,j)] = j
+
+        for i in range(1,len(word1)+1):
+            for j in range(1,len(word2)+1):
+                if word1[i-1] == word2[j-1]:
+                    dp[(i,j)] = dp.get((i-1,j-1),0)
+                else:
+                    dp[(i,j)] = 1+min(dp.get((i-1,j-1),0),dp.get((i-1,j),0),dp.get((i,j-1),0))
+
+        return dp.get((len(word1),len(word2)),0)
+
+            
