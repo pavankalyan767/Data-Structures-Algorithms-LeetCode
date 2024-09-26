@@ -1,0 +1,49 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = {}
+
+
+        # approach 
+        # same approach as the previous stocks dp problems 
+        # except here i just skip to ind+2 after selling at ind
+        # insted of going to ind+1 which i do normally in the other 
+        # dp on stock problems 
+
+
+        # def solve(ind,bought):
+            
+    
+
+        #     if ind>=len(prices):
+        #         return 0
+        #     if (ind,bought) in dp:
+        #         return dp[(ind,bought)]
+            
+        #     if bought==0:
+        #         buy = -prices[ind]+solve(ind+1,1)
+        #         not_buy = solve(ind+1,0)
+        #         dp[(ind,bought)] = max(buy,not_buy)
+        #         return max(buy,not_buy)
+        #     if bought==1:
+        #         sell = prices[ind] + solve(ind+2,0)
+        #         not_sell = solve(ind+1,bought)
+        #         dp[(ind,bought)] = max(sell,not_sell)
+        #         return max(sell,not_sell)
+        
+        # a =  solve(0,0)
+        
+        for bought in range(0,2):
+            dp[(len(prices),bought)] = 0
+        
+        for ind in range(len(prices)-1,-1,-1):
+            for bought in range(0,2):
+                if bought==0:
+                    buy = -prices[ind]+dp.get((ind+1,1),0)
+                    not_buy = dp.get((ind+1,0),0)
+                    dp[(ind,bought)] = max(buy,not_buy)
+                
+                if bought==1:
+                    sell = prices[ind] + dp.get((ind+2,0),0)
+                    not_sell = dp.get((ind+1,1),0)
+                    dp[(ind,bought)] = max(sell,not_sell)
+        return dp.get((0,0),0)
