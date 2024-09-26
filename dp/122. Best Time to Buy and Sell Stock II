@@ -1,0 +1,63 @@
+class Solution:
+    def maxProfit(self, prices: List[int]) -> int:
+        dp = {}
+        # Approach 
+        # so at each index i have two options 
+        # either to buy or to sell 
+        # or i can also refrain from doing both 
+        # but the problem is i need to know if i can sell 
+        # if i have already bought only then i can sell 
+        # so i use a variable called bought
+        # so if bought==0 then i can either buy or proceed to the next day 
+        # if bought==1 then i can sell or proceed to the next index
+        # so when i buy i subtract the price of that day 
+        # when i sell it i add the price of that day 
+        # so after returning and stuff then i just maximize 
+        # those two vals from each situation ie bought and not bought 
+        # and 2 in each buy or not buy and sell or not sell 
+        # so maximize them 
+        
+        # def solve(ind,bought):
+
+        #     if ind>=len(prices):
+        #         return 0
+        #     if (ind,bought) in dp:
+        #         return dp[(ind,bought)]
+            
+        #     if bought==0:
+        #         buy = -prices[ind]+solve(ind+1,1)
+        #         not_buy = solve(ind+1,0)
+        #         dp[(ind,bought)] = max(buy,not_buy)
+        #         return max(buy,not_buy)
+        #     if bought==1:
+        #         sell = prices[ind] + solve(ind+1,0)
+        #         not_sell = solve(ind+1,bought)
+        #         dp[(ind,bought)] = max(sell,not_sell)
+        #         return max(sell,not_sell)
+        
+        # a =  solve(0,0)
+        # print(dp)
+        # return a
+        
+        # first fill the base case and stuff then go on with other things
+
+        for bought in range(0,2):
+            dp[(len(prices),bought)] = 0
+
+        for ind in range(len(prices)-1,-1,-1):
+            for bought in range(0,2):
+                
+                if bought==0:
+                    buy = -prices[ind]+dp.get((ind+1,1))
+                    not_buy = dp.get((ind+1,0))
+                    dp[(ind,bought)] = max(buy,not_buy)
+                if bought==1:
+                    sell = prices[ind] + dp.get((ind+1,0))
+                    not_sell = dp.get((ind+1,1))
+                    dp[(ind,bought)] = max(sell,not_sell)
+        return dp[(0,0)]
+
+
+
+
+
