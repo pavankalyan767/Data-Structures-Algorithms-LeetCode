@@ -1,0 +1,83 @@
+from bisect import bisect_left
+class Solution:
+
+    def lengthOfLIS(self, nums: List[int]) -> int:
+        
+        # approach 
+        # at any index i can either take that value or not take it 
+        # i will take it only if it is less than the previous value that is 
+        # taken in the path 
+        # so i will pass it and go to the next index 
+        # if it isn't less than the previous value added to the 
+        # path then don't take it 
+        
+
+        dp = {}
+
+        # def solve(ind,prev_ind):
+        #     if ind>=len(nums):
+        #         return 0
+
+        #     if (ind,prev_ind) in dp:
+        #         return dp[(ind,prev_ind)]
+
+        #     take = -1e9
+            
+        #     if nums[prev_ind]<nums[ind] or prev_ind==-1:
+                
+        #         take = 1 + solve(ind+1,ind)
+
+        #     not_take = solve(ind+1,prev_ind)
+
+        #     dp[(ind,prev_ind)] = max(take,not_take)
+        #     return dp[(ind,prev_ind)]
+        
+        # a = solve(0,-1)
+        # return a
+
+        
+        
+        
+        
+        for ind in range(len(nums)-1,-1,-1):
+            
+            for prev_ind in range(-1,len(nums)):
+                take = -float('inf')
+
+                if nums[prev_ind]<nums[ind] or prev_ind==-1:
+                    take = 1 + dp.get((ind+1,ind),0)
+
+                not_take = dp.get((ind+1,prev_ind),0)
+
+                dp[(ind,prev_ind)] = max(take,not_take)
+
+        print(dp)
+        
+        return dp.get((0,-1),0)
+
+
+
+        # finally only this works due to tle 
+        # so for each number it checks if the number in the last of the 
+        # sequence arr is less or greater 
+        # if it is greater then append it 
+        # or else find the index at which it can be inserted and replace it 
+        # ex arr=[10] num = 9 bisect left returns pos =0 
+        # so arr[0] becomes 9
+        # arr = [nums[0]]
+        # nums.pop(0)
+        # for num in nums:
+        #     if num>arr[-1]:
+        #         arr.append(num)
+
+        #     else:
+        #         arr[bisect_left(arr,num)] = num
+
+        # return len(arr)
+
+        
+        
+        
+
+            
+            
