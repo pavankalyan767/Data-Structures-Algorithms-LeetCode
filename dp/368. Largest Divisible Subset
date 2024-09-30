@@ -1,0 +1,60 @@
+class Solution:
+    def largestDivisibleSubset(self, nums: List[int]) -> List[int]:
+        
+
+
+
+        # approach 
+        # so i first sort the nums array 
+        # then i have two state variables index and previous value 
+        # i check if the previous value can divide number at current 
+        # index if yes then i include it into the list and then pass on 
+        # the recurison 
+        # at the same time i check if that take list has a length more than 
+        # res , which is formed by not taking the current element 
+        # even if it can be divided or not 
+        # then based on the longes array between res and take 
+        # dp is updated 
+        # finally the base case is if index reaches length of nums 
+        # return an empty list 
+        
+        nums.sort()
+        dp = {}
+        
+        # def solve(ind,prev):
+        #     if ind==len(nums):
+
+        #         return []
+        #     if (ind,prev) in dp:
+        #         return dp[(ind,prev)]
+
+        #     res = solve(ind+1,prev)
+            
+        #     if nums[ind]%prev==0:
+        #         take = [nums[ind]] + solve(ind+1,nums[ind])
+
+        #         if len(take)>len(res):
+        #             res = take            
+            
+        #     dp[(ind,prev)] = res
+        #     return res
+            
+        # return solve(0,1)
+        dp[(len(nums),1)] = []
+        for prev in nums:
+            dp[(len(nums),prev)] = []
+
+        for ind in range(len(nums)-1,-1,-1):
+            for prev_ind in range(len(nums)-1,-1,-1):
+                res = dp.get((ind+1,nums[prev_ind]),[])
+                if nums[ind]%nums[prev_ind]==0:
+                    take = [nums[ind]] + dp.get((ind+1,nums[ind]),[])
+                    if len(take)>len(res):
+                        res = take
+                dp[(ind,nums[prev_ind])] = res
+        res = []
+        for (ind,nums[prev_ind]) in dp:
+            if len(dp[(ind,nums[prev_ind])])>len(res):
+                res = dp[(ind,nums[prev_ind])]
+
+        return res
