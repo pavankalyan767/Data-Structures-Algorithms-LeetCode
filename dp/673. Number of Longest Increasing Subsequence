@@ -1,0 +1,32 @@
+class Solution:
+    def findNumberOfLIS(self, nums: List[int]) -> int:
+
+
+        # Approach 
+        # at each index while updating the dp array 
+        # if i find any subsequence of the same size of the one i am at 
+        # right now then i'll add the number from that count array 
+        
+        dp = [1]*len(nums)
+
+        count = [1]*len(nums)
+        for cur in range(len(nums)):
+            for prev in range(0,cur):
+                if nums[cur]>nums[prev]:
+                    
+                    if dp[prev] + 1 > dp[cur]:
+                        dp[cur] = dp[prev]+1
+                        count[cur] = count[prev]
+
+                    elif dp[prev] + 1 ==dp[cur]:
+                        count[cur] +=count[prev]
+
+        maxlen = max(dp)
+        total=0
+        for i in range(len(count)):
+            if dp[i]==maxlen:
+                total+=count[i]
+        return total      
+        
+
+
