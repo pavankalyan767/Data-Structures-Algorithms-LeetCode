@@ -1,0 +1,63 @@
+class Solution:
+    def maxCoins(self, nums: List[int]) -> int:
+
+        dp = {}
+
+        # approach is unique
+        # i have to first look at the last ballon that will be bursted 
+        # and then build up from there till the top ie when all 
+        # ballons are there 
+        # and based on that i get a logic of i-1 and j+1 
+        # append 1s on both sides of the nums array 
+        # if i surpasses j then return 0
+        # and i can choose the ballon which will be bursted each time 
+        # and then from i till ind-1 becomes the left subpart 
+        # and ind+1 till j becomes the second subpart 
+        # j+1 being 1 and i-1 beign 1  
+        
+        
+        nums = [1]+nums+[1]
+
+        
+
+        # def solve(i,j):
+
+        #     if i>j:
+        #         return 0
+            
+        #     if (i,j) in dp:
+        #         return dp[(i,j)]
+
+        #     maxi = -1e9
+
+        #     for ind in range(i,j+1):
+        #         cost = nums[i-1]*nums[ind]*nums[j+1] +solve(i,ind-1)+solve(ind+1,j)
+
+        #         maxi = max(cost,maxi)
+        #     dp[(i,j)] = maxi
+        #     return maxi
+        # return solve(1,len(nums)-2)
+
+        # Approach 
+        # here make everythign 0 when i>j 
+        # here i moves from len(nums)-2 till 1 
+        # and j movies from i till len(nums) 
+        # j is dependent on i
+
+        for i in range(1,len(nums)):
+            for j in range(0,len(nums)):
+                if i>j:
+                    dp[(i,j)]=0
+        
+        for i in range(len(nums)-2,0,-1):
+            for j in range(i,len(nums)-1):
+                maxi = -1e9
+
+                for ind in range(i,j+1):
+                    cost = nums[i-1]*nums[ind]*nums[j+1] + dp.get((i,ind-1),1)+dp.get((ind+1,j),1)
+                    maxi = max(cost,maxi)
+                dp[(i,j)] = maxi
+        return dp.get((1,len(nums)-2))
+
+
+        
