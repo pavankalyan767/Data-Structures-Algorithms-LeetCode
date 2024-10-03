@@ -1,0 +1,63 @@
+#User function Template for python3
+
+from typing import List
+from queue import Queue
+from collections import deque
+class Solution:
+    
+    # Approach 
+    # first initialize a visited array of size of no of nodes 
+    # then mark the first node as visited 
+    # then append the first node to the queue 
+    # use an array called bfs_store to store the traversal result 
+    # while the queue is not empty continue the loop 
+    # pop the left element from the queue 
+    # store it in a node 
+    # then append it to bfs_store 
+    # then for that particular node in the adjacency list 
+    # check for it's neighbours 
+    # for every neighbour node check if it is visited 
+    # if it is not visited then visit it and add it to the queue
+    # finally return the bfs_store array 
+    #Function to return Breadth First Traversal of given graph.
+    def bfsOfGraph(self, V: int, adj: List[List[int]]) -> List[int]:
+        visited = [0]*V
+        visited[0]=1
+        q = deque()
+        q.append(0)
+        
+        bfs_store=[]
+        
+        while q:
+            node = q.popleft()
+            
+            bfs_store.append(node)
+            
+            for j in adj[node]:
+                if visited[j]!=1:
+                    visited[j] = 1
+                    q.append(j)
+        return bfs_store
+            
+            
+
+#{ 
+ # Driver Code Starts
+
+
+if __name__ == '__main__':
+	T=int(input())
+	for i in range(T):
+		V, E = map(int, input().split())
+		adj = [[] for i in range(V)]
+		for _ in range(E):
+			u, v = map(int, input().split())
+			adj[u].append(v)
+		ob = Solution()
+		ans = ob.bfsOfGraph(V, adj)
+		for i in range(len(ans)):
+		    print(ans[i], end = " ")
+		print()
+        
+
+# } Driver Code Ends
