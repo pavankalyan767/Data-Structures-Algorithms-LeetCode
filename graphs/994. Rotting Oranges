@@ -1,0 +1,57 @@
+class Solution:
+    def orangesRotting(self, grid: List[List[int]]) -> int:
+        
+
+        # Approach 
+        # i'll be using bfs for this problem 
+        # i put all the rotten oranges ie rows and cols in the queue 
+        # and from there i start exploring 
+        # queue contains of row col and minutes 
+        # so i run a for loop and add all the rotten oranges to the queue 
+        # i initialize the directions array which contains of directions 
+        # and also a variable called maxtime 
+        # now until the length of the queue is not 0 run the while loop 
+        # pop the queue i get row,col,minutes 
+        # now i have to explore all the directions so i run a loop 
+        # for each direction i check if it is inbounds or out of bounds 
+        # if it is in and it isn't rotten then i rot that orange and then append 
+        # the row col and increment time and append it to the queue 
+        # and also record the maximized time over there 
+
+        q = deque()
+        
+
+        for row in range(0,len(grid)):
+            for col in range(0,len(grid[0])):
+                if grid[row][col]==2:
+                    q.append([row,col,0])
+                
+
+        max_time=0
+        directions = [[-1,0],[1,0],[0,-1],[0,1]]
+        while len(q)!=0:
+
+            row,col,minutes = q.popleft()
+            for dx,dy in directions:
+                crow,ccol = row+dx,col+dy
+                if 0<=crow<len(grid) and 0<=ccol<len(grid[0]) and grid[crow][ccol]==1:
+                    grid[crow][ccol]=2
+                    q.append([crow,ccol,minutes+1])
+                    max_time = max(max_time,minutes+1)
+        
+
+        # Condition to check if there are any fresh oranges left out 
+        for row in range(len(grid)):
+            for col in range(len(grid[0])):
+                if grid[row][col]==1:
+                    return -1
+
+        return max_time
+
+
+
+
+
+
+
+        
