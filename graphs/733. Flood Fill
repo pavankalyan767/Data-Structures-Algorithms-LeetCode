@@ -1,0 +1,30 @@
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        
+
+        # Approach is same as floodfill
+
+        starting_color = image[sr][sc]
+        if starting_color==color:
+            return image
+        image[sr][sc]=color
+        q = deque()
+
+        q.append([sr,sc])
+
+
+        directions = [[-1,0],[1,0],[0,-1],[0,1]]
+
+        while q:
+            row,col = q.popleft()
+            for dx,dy in directions:
+                rrow,ccol = row+dx,col+dy
+                if 0<=rrow<len(image) and 0<=ccol<len(image[0]) and image[rrow][ccol]==starting_color:
+                    
+                    image[rrow][ccol] = color
+                    q.append([rrow,ccol])
+
+        return image
+
+
+
