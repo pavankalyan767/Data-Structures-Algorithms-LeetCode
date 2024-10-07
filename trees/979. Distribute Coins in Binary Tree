@@ -1,0 +1,45 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+class Solution:
+    def distributeCoins(self, root: Optional[TreeNode]) -> int:
+
+        # Approach 
+        # so at each node i go i have to either send the coins or get the coins 
+        # so i have to calculate the excess or deficit 
+        # so at each node as we can look into the example if there are deficit coins it goes 
+        # as size of that subtree - number of coins it needs 
+        # take abs of the above 
+        # in the same way if it is excess then send the coins away 
+        # so at each node i need size and number of coins 
+        # so i return a list 
+        # base case being [0,0]
+        # at each node i just calculate the size by adding number of nodes on right  and left 
+        # at each node i calculate the number of coins by adding the number of coins on its left 
+        # and its right 
+        # so this way i calculate the number of moves at each and every nodea 
+        # using a global variable at all the states 
+
+        self.res = 0
+
+
+        def dfs(node):
+            if node is None:
+                return [0,0]
+
+            lsize,lcoins=dfs(node.left)
+            rsize,rcoins=dfs(node.right)
+
+
+            size = 1 + lsize + rsize
+            coins = node.val + lcoins + rcoins
+            self.res+= abs(size-coins)
+            return [size,coins]
+
+        dfs(root)
+        return self.res
+
+        
