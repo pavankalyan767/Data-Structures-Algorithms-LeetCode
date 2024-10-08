@@ -1,0 +1,62 @@
+class Solution:
+    def minSwaps(self, s: str) -> int:
+
+        # Approach 
+        # so i iterate over the array 
+        # if i find a opening bracket then i decrement 
+        # if i find  a closing bracket then i increment 
+        # and record the number the max number so if there is a imbalance the number of 
+        # closing bracket will be greater than number of opening bracket and i will 
+        # record it and then i will return maximum+1 //2 pairs 
+
+        no_of_closing=0
+        max_closing=0
+
+        for i in s:
+            if i=='[':
+                no_of_closing-=1
+            else:
+                no_of_closing+=1
+            max_closing=max(max_closing,no_of_closing)
+        return (max_closing+1)//2
+
+        
+            
+                
+
+        # i=0
+        # j=len(s)-1
+        # balance=0
+        # count=0
+        # l=list(s)
+        # i=0
+        # while i<j:
+            
+        #     while l[i]!=']':
+        #         if l[i]=='[':
+        #             balance+=1
+        #         i+=1
+        #     while l[j]!='[':
+        #         if l[j]==']':
+        #             balance-=1
+        #         j-=1
+        #     if i>=j:
+        #         break
+        #     if balance>=0:
+        #         break
+        #     if l[i]==']' and l[j]=='[':
+                
+        #         l[i]='['
+        #         l[j]=']'
+        #         count+=1
+        #         i+=1
+        #         j-=1
+                
+                
+            
+        # return count
+
+        
+
+            
+        
