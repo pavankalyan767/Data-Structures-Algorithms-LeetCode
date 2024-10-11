@@ -1,0 +1,51 @@
+from typing import List
+from collections import deque
+class Solution:
+    #Function to detect cycle in an undirected graph.
+	def isCycle(self, V: int, adj: List[List[int]]) -> bool:
+	    
+	    
+	    
+	    # Approach 
+	    # use bfs 
+	    # so if i start bfs at one vertex and if there is a cycle 
+	    # initial index has no source so it is -1
+	    # one bfs will reach the instersection vertex before the other 
+	    # so once it reaches the other one will also reach it 
+	    # but to the surprise to the second one that particular vertex 
+	    # is already visited so if any vertex is already visited #
+	    # then check if it is the parent vertex 
+	    # since this is an undirected graph in the adj matrix 
+	    # a particular vertex it can go the it's parent vertex also 
+	    # so if it is not it's parent vertex and it is visited then there is 
+	    # a cycle so return True 
+	    # finally after the queue is empty if there is no detection 
+	    # then return False signifying no cycle return False
+	    # there might be more than one components so run a for loop 
+	    # and try to perform bfs on all the unvisited vertices
+	    
+	    visited=[0]*V
+	    
+	    
+	    def bfs_detect_cycle(src):
+	        queue = deque()
+	        queue.append([src,-1])
+	        visited[src]=1
+	        
+	        while queue:
+	            node , parent = queue.popleft()
+	            
+	            for neighbour in adj[node]:
+	                if visited[neighbour]==0:
+	                    queue.append([neighbour,node])
+	                    visited[neighbour]=1
+	                else:
+	                    if parent!=neighbour:
+	                        return True
+	        return False
+        for i in range(V):
+	        if visited[i]==0:
+	            
+	            if bfs_detect_cycle(i):
+	                return True
+	    return False
