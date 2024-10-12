@@ -1,0 +1,50 @@
+#User function Template for python3
+
+class Solution:
+    def numIslands(self, grid):
+        # Approach 
+        # similar to Number of Islands in leetcode 
+        # but here there are 8 directions
+        # so perform a dfs where every there is a 1 in the board 
+        # after the dfs is completed it returns 
+        # then increment the count so all the connected 1s will 
+        # be traversed in one go and this leads to accumulation of 
+        # differnet islands 
+        
+        rows = len(grid)
+        cols = len(grid[0])
+        
+        directions = [[0,1],[0,-1],[1,0],[-1,0],[-1,-1],[-1,1],[1,-1],[1,1]]
+        def dfs(r,c):
+            if r<0 or c<0 or r==rows or c==cols or grid[r][c]==0:
+                return 
+            
+            grid[r][c]=0
+            
+            for dx,dy in directions:
+                dfs(r+dx,c+dy)
+                
+        count=0
+        for r in range(rows):
+            for c in range(cols):
+                if grid[r][c]==1:
+                    dfs(r,c)
+                    count+=1
+        return count
+            
+            
+
+
+#{ 
+ # Driver Code Starts
+# Driver code
+if __name__ == "__main__":
+    for _ in range(int(input())):
+        n, m = map(int, input().strip().split())
+        grid = []
+        for i in range(n):
+            grid.append([int(i) for i in input().strip().split()])
+        obj = Solution()
+        print(obj.numIslands(grid))
+
+# } Driver Code Ends
