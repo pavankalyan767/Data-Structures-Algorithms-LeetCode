@@ -1,0 +1,44 @@
+# Given two positive integers n and k, the binary string Sn is formed as follows:
+
+# S1 = "0"
+# Si = Si - 1 + "1" + reverse(invert(Si - 1)) for i > 1
+# Where + denotes the concatenation operation, reverse(x) returns the reversed string x, and invert(x) inverts all the bits in x (0 changes to 1 and 1 changes to 0).
+
+# For example, the first four strings in the above sequence are:
+
+# S1 = "0"
+# S2 = "011"
+# S3 = "0111001"
+# S4 = "011100110110001"
+# Return the kth bit in Sn. It is guaranteed that k is valid for the given n.
+
+
+
+
+
+
+
+class Solution:
+    def findKthBit(self, n: int, k: int) -> str:
+        lis=[]
+        lis.append('0')
+
+        def converter(prev_sequence):
+            final=''
+            for i in prev_sequence:
+                if i=='1':
+                    final+='0'
+                else:
+                    final+='1'
+            return prev_sequence+'1'+final[::-1]
+        i=0
+        
+        while i!=n:
+            lis.append(converter(lis[-1]))
+            i+=1
+        
+        return lis[n-1][k-1]
+            
+
+
+        
