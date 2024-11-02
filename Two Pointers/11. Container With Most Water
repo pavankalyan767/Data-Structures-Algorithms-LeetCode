@@ -1,0 +1,31 @@
+class Solution:
+    def maxArea(self, height: List[int]) -> int:
+        
+        # Approach 
+        # Look into the figure given first inorder to understand the approach with the code 
+        # so it is basically finding the rectangle with the largest area
+        # so use two pointers 
+        # the difference between the two pointers is the length of the rectangle 
+        # the breadth is the minimum of the values at those two pointers 
+        # since water can be only stored to the level of the lower pillar
+        # so at each step calculate the are of the triangle 
+        # and progress the value that is less towards the center of the array 
+        # if both are equal then progress i to the center of the array 
+        
+
+        i=0
+        j=len(height)-1
+        maximum = 0
+        while i!=j:
+
+            maximum=max(maximum,min(height[i],height[j])*(j-i))
+
+            if height[i]<height[j]:
+                i+=1
+            elif height[i]>height[j]:
+                j-=1
+            else:
+                i+=1
+        
+        return maximum
+        
