@@ -1,0 +1,50 @@
+# Definition for a binary tree node.
+# class TreeNode:
+#     def __init__(self, val=0, left=None, right=None):
+#         self.val = val
+#         self.left = left
+#         self.right = right
+
+
+# Approach 
+# perform a dfs along with an array called path , keep on adding the numbers you encounter in the 
+# dfs and then when i reach a position where i find that the node is a leaf node 
+# i sum all the elements in the path and if it is equal to the target sum then i append the path 
+# to the result array 
+
+
+
+class Solution:
+    def pathSum(self, root: Optional[TreeNode], targetSum: int) -> List[List[int]]:
+        if root is None:
+            return []
+
+        result = []
+        def dfs(node,path):
+            if node is None:
+                return 
+            if node.left is None and node.right is None:
+                if sum(path)==targetSum:
+                    result.append(path[:])
+                return
+
+
+            path1 = path[:]
+            path2 = path[:] 
+            if node.left:
+                path1.append(node.left.val)
+            if node.right:
+                path2.append(node.right.val)
+            
+            
+            
+            dfs(node.left,path1)
+            dfs(node.right,path2)
+        dfs(root,[root.val])
+
+
+        return result
+
+
+
+        
