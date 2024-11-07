@@ -1,0 +1,38 @@
+class Solution:
+    def largestCombination(self, candidates: List[int]) -> int:
+
+        # Approach 
+        # so in bitwise and what happens is if i perform bitwise and so at each index of a bit 
+        # if both the values are 1 then the resulting number will be 1 or else no 
+        # so for the longest combination of and operations between numbers to be greater than 0
+        # there should be 1s in all the indexes 
+        # so first reverse the order and then count the location of 1s in the binary sequence
+        # so record the indexes where 1 is present , do this for all the numbers 
+        # after doing this store all the indexes in a single list , i mean all indexes from all the numbers 
+        # and later calculate the frequency of every index 
+        # so the maximum frequency is the total maximum number of operations possible 
+
+
+
+
+
+
+        freq = []
+        def calculator(sequence):
+            lis = []
+            for i in range(len(sequence)):
+                if sequence[i]=='1':
+                    lis.append(i)
+
+            return lis
+        for i in candidates:
+            ans = str(bin(i))[2:]
+            ans = ans [::-1]
+            freq.extend(calculator(ans))
+        
+
+        a = Counter(freq)
+        print(a)
+        return max(list(a.values()))
+
+        
