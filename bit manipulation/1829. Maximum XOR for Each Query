@@ -1,0 +1,35 @@
+from typing import List
+
+class Solution:
+    def getMaximumXor(self, nums: List[int], maximumBit: int) -> List[int]:
+        """
+        This function computes the maximum XOR result for each prefix of an array,
+        by XOR-ing the prefix with the highest value possible with a given number of bits.
+        
+        Parameters:
+        nums (List[int]): List of integers representing the array.
+        maximumBit (int): The number of bits to consider for calculating maximum XOR.
+
+        Returns:
+        List[int]: A list of integers representing the maximum XOR values in reverse order.
+        """
+
+        # Step 1: Calculate the maximum XOR value with `maximumBit` bits.
+        # For example, if maximumBit is 3, maximum_xor_value will be 7 (binary 111).
+        maximum_xor_value = pow(2, maximumBit) - 1
+
+        # Step 2: Calculate the prefix XOR array.
+        # `prefix_array[i]` will contain the XOR of nums[0] to nums[i].
+        prefix_array = [nums[0]]
+        for i in range(1, len(nums)):
+            # Append the XOR of the current number with the last prefix XOR.
+            prefix_array.append(nums[i] ^ prefix_array[-1])
+
+        # Step 3: Generate results by XOR-ing each prefix with maximum_xor_value in reverse order.
+        result = []
+        for i in range(len(prefix_array) - 1, -1, -1):
+            # XOR the prefix with maximum_xor_value to get the maximum XOR for the prefix.
+            result.append(prefix_array[i] ^ maximum_xor_value)
+
+        # Return the final result array.
+        return result
