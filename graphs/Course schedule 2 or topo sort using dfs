@@ -1,0 +1,81 @@
+# Approach:
+#
+# 1. **Adjacency List Construction**:
+#    - Build an adjacency list to represent the directed graph. Each course points to the courses that depend on it.
+#
+# 2. **Cycle Detection (Using DFS)**:
+#    - To determine if it’s possible to finish all courses, check for cycles in the graph.
+#    - Use a `visited` array to mark nodes that have been visited during traversal.
+#    - Use a `path_visited` array to detect back edges (indicating a cycle). 
+#    - Perform DFS on each node, returning `True` if a cycle is detected. 
+#
+# 3. **Topological Sorting**:
+#    - If no cycles are detected, perform a topological sort to determine the order in which courses can be completed.
+#    - Use a `visited` array for nodes that have already been processed.
+#    - Perform DFS and add each node to the beginning of the result list (`arr`) after visiting all its neighbors.
+#
+# 4. **Return Results**:
+#    - If a cycle is detected, return an empty list (no valid order exists).
+#    - Otherwise, return the topologically sorted order of courses.
+
+class Solution:
+    def findOrder(self, numCourses: int, prerequisites: List[List[int]]) -> List[int]:
+        # Step 1: Build the adjacency list.
+        adj = []
+        for i in range(numCourses):
+            adj.append([])
+
+        for first, second in prerequisites:
+            adj[second].append(first)
+        
+        # Step 2: Check for cycles using DFS.
+        def check_cycle():
+            visited = [0] * numCourses  # Marks if a node is visited.
+            path_visited = [0] * numCourses  # Marks nodes in the current DFS path.
+
+            def dfs(src):
+                visited[src] = 1
+                path_visited[src] = 1
+
+                for neighbour in adj[src]:
+                    if visited[neighbour] == 0:
+                        # Recursively visit neighbors.
+                        if dfs(neighbour):
+                            return True
+                    else:
+                        if path_visited[neighbour] == 1:  # Back edge found.
+                            return True
+
+                path_visited[src] = 0  # Remove node from the current path.
+                return False
+
+            # Check each node for cycles.
+            for i in range(numCourses):
+                if visited[i] == 0:
+                    if dfs(i):
+                        return True
+
+            return False
+
+        # If a cycle exists, return an empty list.
+        if check_cycle():
+            return []
+        
+        # Step 3: Perform topological sort using DFS.
+        visited = [0] * numCourses  # Reset visited array for topological sort.
+        arr = []  # Stores the topologically sorted order.
+
+        def dfs(src):
+            visited[src] = 1
+            for neighbour in adj[src]:
+                if visited[neighbour] == 0:
+                    dfs(neighbour)
+            arr.insert(0, src)  # Add node to the beginning of the result.
+
+        # Process all nodes.
+        for i in range(numCourses):
+            if visited[i] == 0:
+                dfs(i)
+
+        # Step 4: Return the topologically sorted order.
+        return arr
