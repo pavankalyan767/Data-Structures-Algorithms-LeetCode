@@ -1,0 +1,75 @@
+class Solution:
+    def eventualSafeNodes(self, graph: List[List[int]]) -> List[int]:
+        """
+        Approach: Finding Eventual Safe Nodes
+        
+        This solution determines the safe nodes in a directed graph. A safe node is one that:
+        1. Is not part of any cycle.
+        2. Leads only to other safe nodes or terminal nodes.
+
+        Key Steps:
+        1. Graph Representation:
+           - The graph is represented as an adjacency list, where graph[i] contains
+             all nodes that can be reached directly from node i.
+        
+        2. DFS with Memoization:
+           - Perform Depth First Search (DFS) on each node.
+           - Use a memo dictionary to store the safety status of nodes:
+             - True: Node is safe.
+             - False: Node is unsafe or part of a cycle.
+           - Nodes are temporarily marked as unsafe during DFS.
+        
+        3. Cycle Detection:
+           - A node is part of a cycle if it is revisited while it is still marked as unsafe.
+           - Any node that leads to a cycle is also marked as unsafe.
+
+        4. Result Construction:
+           - After processing all nodes, return a list of nodes that are safe.
+
+        Complexity:
+        - Time Complexity: O(V + E), where V is the number of nodes and E is the number of edges.
+        - Space Complexity: O(V), for the recursion stack and the memoization dictionary.
+        """
+
+        # Dictionary to memoize the safety status of each node
+        # Key: Node index, Value: True (safe) or False (unsafe)
+        memo = {}
+
+        def dfs(node):
+            """
+            Helper function to perform DFS and determine if a node is safe.
+            
+            Args:
+            - node (int): The current node being processed.
+
+            Returns:
+            - bool: True if the node is safe, False otherwise.
+            """
+            # If the node's status is already computed, return it
+            if node in memo:
+                return memo[node]
+
+            # Temporarily mark the node as unsafe (to detect cycles)
+            memo[node] = False
+
+            # Traverse all neighbors of the current node
+            for neighbor in graph[node]:
+                # If any neighbor is unsafe or leads to a cycle, this node is unsafe
+                if not dfs(neighbor):
+                    return False
+
+            # If no cycles are detected, mark the node as safe
+            memo[node] = True
+            return True
+
+        # List to store all safe nodes
+        result = []
+
+        # Iterate through all nodes in the graph
+        for i in range(len(graph)):
+            # Add the node to the result if it is safe
+            if dfs(i):
+                result.append(i)
+
+        # Return the list of safe nodes
+        return result
