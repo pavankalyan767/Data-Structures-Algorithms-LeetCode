@@ -1,0 +1,100 @@
+# Approach:
+# 
+# 1. **Indegree Calculation**:
+#    - Compute the indegree for each vertex in the graph. Indegree is the number of incoming edges for a vertex.
+#
+# 2. **Initialize a Queue**:
+#    - Add all vertices with indegree `0` to a queue. These vertices have no dependencies and can be processed first.
+#
+# 3. **Topological Sorting** (Kahn's Algorithm):
+#    - While the queue is not empty:
+#        - Remove a vertex from the queue and add it to the topological order.
+#        - For each neighboring vertex of the removed vertex:
+#            - Decrease its indegree by 1.
+#            - If the indegree of the neighbor becomes `0`, add it to the queue.
+#
+# 4. **Validation**:
+#    - Verify that the resulting order is valid by ensuring every directed edge `u -> v` satisfies the condition that 
+#      `u` appears before `v` in the topological order.
+#
+# The algorithm ensures that the graph is processed in linear time (O(V + E)), where V is the number of vertices
+# and E is the number of edges, making it efficient for large directed acyclic graphs (DAGs).
+
+from collections import deque
+
+class Solution:
+    
+    # Function to return list containing vertices in Topological order.
+    def topologicalSort(self, adj):
+        # Step 1: Calculate indegree of each vertex.
+        indegree = [0] * len(adj)
+        for i in range(len(adj)):
+            for j in adj[i]:
+                indegree[j] += 1
+
+        # Step 2: Initialize a queue with all vertices having indegree 0.
+        q = deque()
+        for i in range(len(indegree)):
+            if indegree[i] == 0:
+                q.append(i)
+                
+        # Step 3: Perform Kahn's Algorithm for topological sorting.
+        topo = []
+        while q:
+            # Remove a vertex from the queue.
+            node = q.popleft()
+            # Add it to the topological order.
+            topo.append(node)
+            
+            # Decrease indegree of all its neighbors.
+            for neighbor in adj[node]:
+                indegree[neighbor] -= 1
+                # If a neighbor's indegree becomes 0, add it to the queue.
+                if indegree[neighbor] == 0:
+                    q.append(neighbor)
+        
+        # Step 4: Return the topological order.
+        return topo
+
+
+# Driver Code
+import sys
+
+sys.setrecursionlimit(10**6)
+
+def check(graph, N, res):
+    # Check if the topological order is valid.
+    if N != len(res):
+        return False
+    map = [0] * N
+    for i in range(N):
+        map[res[i]] = i
+    for i in range(N):
+        for v in graph[i]:
+            if map[i] > map[v]:
+                return False
+    return True
+
+
+if __name__ == '__main__':
+    t = int(input())  # Number of test cases.
+    for i in range(t):
+        e, N = list(map(int, input().strip().split()))  # Number of edges and vertices.
+        adj = [[] for i in range(N)]
+
+        # Building the adjacency list.
+        for i in range(e):
+            u, v = map(int, input().split())
+            adj[u].append(v)
+
+        ob = Solution()
+
+        # Compute topological sort.
+        res = ob.topologicalSort(adj)
+
+        # Validate and print the result.
+        if check(adj, N, res):
+            print(1)
+        else:
+            print(0)
+        print("~")
