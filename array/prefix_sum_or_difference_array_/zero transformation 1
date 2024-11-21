@@ -1,0 +1,58 @@
+"""
+# Problem Explanation:
+This function determines if it's possible to transform the `nums` array into a "zero array" 
+(i.e., all elements become zero) by applying a list of range queries. Each query reduces 
+the elements in a specified range `[l, r]` by 1.
+
+# Approach:
+1. **Use a Prefix Array for Range Updates**:
+   Instead of iterating through the entire range `[l, r]` for every query (which would be 
+   inefficient), we utilize a prefix array technique. 
+   - At `prefix[l]`, subtract 1 to signify that values starting from `l` are reduced by 1.
+   - At `prefix[r+1]`, add 1 to cancel the effect beyond the range (if `r+1` is within bounds).
+
+2. **Apply Range Updates**:
+   After processing all the queries, calculate the cumulative values in the prefix array to 
+   determine how much each index in `nums` was reduced.
+
+3. **Check Final Array Values**:
+   Add the prefix array values to the corresponding elements in `nums`. If any element is 
+   greater than zero, return `False`. Otherwise, return `True`.
+
+# Complexity:
+- Time Complexity: O(n + q), where `n` is the length of `nums` and `q` is the number of queries.
+- Space Complexity: O(n), for the prefix array.
+
+# Example Usage:
+nums = [3, 2, 1]
+queries = [[0, 1], [1, 2]]
+isZeroArray(nums, queries) => True
+"""
+
+class Solution:
+    def isZeroArray(self, nums: List[int], queries: List[List[int]]) -> bool:
+        
+        # Step 1: Initialize a prefix array with the same size as nums
+        prefix = [0] * len(nums)
+
+        # Step 2: Process each query to mark range updates
+        for l, r in queries:
+            # Decrease value at the start of the range
+            prefix[l] -= 1
+            # Increase value after the end of the range (if within bounds)
+            if r + 1 < len(nums):
+                prefix[r + 1] += 1
+            
+        # Step 3: Compute the cumulative effect of the range updates
+        for i in range(1, len(prefix)):
+            prefix[i] = prefix[i - 1] + prefix[i]
+        
+        # Step 4: Add the cumulative effects to the original array
+        for i in range(len(nums)):
+            prefix[i] += nums[i]
+            # If any element is greater than zero, it's not a zero array
+            if prefix[i] > 0:
+                return False
+        
+        # If all elements are zero or less, return True
+        return True
