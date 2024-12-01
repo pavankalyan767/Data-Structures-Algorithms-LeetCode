@@ -1,0 +1,123 @@
+#User function Template for python3
+from collections import deque
+from typing import List
+
+
+class Solution:
+
+    def shortestPath(self, V: int, E: int,
+                     edges: List[List[int]]) -> List[int]:
+                         
+        # Approach 
+        # so create an adjacency list 
+        # later create a hashmap which stores and u and v and as tuples
+        # and store the edge length between them as the value
+        # then perform a normal bfs and update the distance array
+        
+        
+        
+        adj = [[] for _ in range(V)]
+        weights = {}
+        for u,v,edge in edges:
+            adj[u].append(v)
+            weights[(u,v)] = edge
+        
+        
+        # initialize the distance array and set the distance from 0 to 0 
+        # as 0 
+        # add the source vertex to the queue
+        
+        distance = [1e9]*V
+        distance[0] = 0
+        q = deque()
+        src = 0
+        q.append([src,0])
+
+
+
+        # so for each node 
+        # check if the distance in the distance array is less 
+        # or dist+ the edge weight is less and update it 
+
+        while q:
+            node,dist = q.popleft()
+            
+            for neighbour in adj[node]:
+                
+                if distance[neighbour]>dist+weights[(node,neighbour)]:
+                    distance[neighbour] = dist+weights[(node,neighbour)]
+                    q.append([neighbour,dist+weights[(node,neighbour)]])
+                    
+        result = []
+        
+        # later if there are vertices which have been unreachable 
+        # update them tot be -1 
+        # and return the result vector which contains all the minimum distances
+        for i in distance:
+            if i==1e9:
+                result.append(-1)
+            else:
+                result.append(i)
+            
+        return result
+        
+        
+
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+from typing import List
+
+
+class IntMatrix:
+
+    def __init__(self) -> None:
+        pass
+
+    def Input(self, n, m):
+        matrix = []
+        #matrix input
+        for _ in range(n):
+            matrix.append([int(i) for i in input().strip().split()])
+        return matrix
+
+    def Print(self, arr):
+        for i in arr:
+            for j in i:
+                print(j, end=" ")
+            print()
+
+
+class IntArray:
+
+    def __init__(self) -> None:
+        pass
+
+    def Input(self, n):
+        arr = [int(i) for i in input().strip().split()]  #array input
+        return arr
+
+    def Print(self, arr):
+        for i in arr:
+            print(i, end=" ")
+        print()
+
+
+if __name__ == "__main__":
+    t = int(input())
+    for _ in range(t):
+
+        n, m = map(int, input().split())
+
+        edges = IntMatrix().Input(m, 3)
+
+        obj = Solution()
+        res = obj.shortestPath(n, m, edges)
+
+        IntArray().Print(res)
+        print("~")
+
+# } Driver Code Ends
