@@ -1,0 +1,88 @@
+#User function Template for python3
+from collections import deque
+class Solution:
+    def shortestPath(self, edges, n, m, src):
+        
+        
+        # Approach 
+        # perform bfs from the source node 
+        # and keep on updating the distance taken from source 
+        # to the particular node in the distance array 
+        
+        
+        adj = [[] for _ in range(n)]
+        
+        # conver the edges into adgacent matrix 
+        # since this is undirected graph 
+        # it must be made such that the edges should be from 
+        # both sides 
+        
+        for u,v in edges:
+            adj[u].append(v)
+            adj[v].append(u)
+        
+        # initialize the distance matrix with large number
+        
+        distance = [1e9 for _ in range(n)]
+        
+        # set the distance for src to be 0
+        distance[src] = 0
+        q = deque()
+        # add src to the queue and the distance 
+        q.append([src,0])
+        
+        
+        # explore all the neighbours for the node and 
+        # keep on updating the distance in the queue 
+        # and the distance array 
+        # and for each neighbour check if the distance 
+        # in the distance matrix is less than the dist+1 
+        # so update it 
+        
+        
+        while q:
+            
+            node,dist = q.popleft()
+            
+            for neighbour in adj[node]:
+                if distance[neighbour]>dist+1:
+                    distance[neighbour] = dist+1
+                    q.append([neighbour,dist+1])
+        result = []
+        
+        # later if the distance is 1e9 itself 
+        # then update it to be -1 and result the distance 
+        for i in distance:
+            if i!=1e9:
+                result.append(i)
+            else:
+                result.append(-1)
+            
+        return result
+        
+        
+        
+        
+
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+
+if __name__ == '__main__':
+    tc = int(input())
+    while tc > 0:
+        n, m = map(int, input().strip().split())
+        edges=[]
+        for i in range(m):
+            li=list(map(int,input().split()))
+            edges.append(li)
+        src=int(input())
+        ob = Solution()
+        ans = ob.shortestPath(edges,n,m,src)
+        for i in ans:
+            print(i,end=" ")
+        print()
+        tc -= 1
+# } Driver Code Ends
