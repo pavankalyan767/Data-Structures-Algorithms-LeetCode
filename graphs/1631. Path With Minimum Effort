@@ -1,0 +1,77 @@
+import heapq
+from collections import deque
+class Solution:
+    def minimumEffortPath(self, heights: List[List[int]]) -> int:
+
+        """
+        1. so initialize a min heap with effort to go to source ,row,col of source
+        2. pop it and check if it is the destination if yes return the effort 
+        3. explore all the different directions in the directions array 
+        4. check if the new row and new cols are inbound 
+        5. if yes then calculate the new_effor required i mean maximum abs difference 
+        6. if it is less than the one in the distance array then update it in the distance array 
+        7 . add that row,col and the new_effort to the heap 
+        8 . whieh means that we are gonna consider exploring the path through this particular node
+        
+        
+        """
+
+
+        rows = len(heights)
+        cols = len(heights[0])
+        directions = [
+            [0,1],
+            [1,0],
+            [0,-1],
+            [-1,0]
+        ]
+
+        distance = [[float('inf')]*cols for _ in range(rows)]
+
+        
+
+        distance[0][0] = 0
+    
+        min_heap = [(0,0,0)]
+
+
+        while min_heap:
+
+            cur_diff , row,col = heapq.heappop(min_heap)
+            
+            if row==rows-1 and col==cols-1:
+                return cur_diff
+
+            for dr,dc in directions:
+                new_row,new_col = row+dr,col+dc
+
+                if 0<=new_row<rows and 0<=new_col<cols:
+
+                    new_diff = max(cur_diff,abs(heights[row][col]-heights[new_row][new_col]))
+
+
+                    if new_diff<distance[new_row][new_col]:
+                        distance[new_row][new_col] = new_diff
+                        heapq.heappush(min_heap,(new_diff,new_row,new_col))
+
+
+        
+
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        
