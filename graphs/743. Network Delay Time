@@ -1,0 +1,73 @@
+from collections import deque
+class Solution:
+    def networkDelayTime(self, times: List[List[int]], n: int, k: int) -> int:
+
+
+
+
+        """
+        thought process:
+        1. find the longest time taken to reach any particular node 
+        2. so the maximum delay is the maximum distance from the source to any particular node 
+        3. basically find the node which takes the most time to reach from the source 
+        4. and return that distance needed to reach that node from the source
+        """
+
+        weights = {}
+        adj = []
+        for i in range(0,n+1):
+            adj.append([])
+
+
+        
+        for u,v,weight in times:
+            weights[(u,v)] = weight
+            adj[u].append(v)
+
+        print(adj)
+
+
+        
+
+        
+        
+
+
+
+        source = k
+
+        q = deque() # node , distance
+        q.append([source,0])
+        
+
+        distance = {}
+
+        for i in range(1,n+1):
+            distance[i] = float('inf')
+        distance[source] = 0
+        
+
+        while q:
+            node,dist = q.popleft()
+
+            for neighbour in adj[node]:
+                if distance[neighbour]>dist+weights[(node,neighbour)]:
+                    distance[neighbour] = dist+weights[(node,neighbour)]
+                    q.append([neighbour,dist+weights[(node,neighbour)]])
+
+        print(distance)
+        result = []
+        for i in distance.values():
+            if i!=0:
+                result.append(i)
+
+        if max(result)<=0 or max(result)==float('inf'):
+            return -1
+        else:
+            return max(result)
+
+
+
+
+
+        
