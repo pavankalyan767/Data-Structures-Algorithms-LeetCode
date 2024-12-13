@@ -1,0 +1,27 @@
+#User function Template for python3
+
+class Solution:
+    '''
+    Function to implement Bellman Ford
+    V: nodes in graph
+    edges: adjacency list for the graph
+    src: source vertex
+    '''
+    def bellmanFord(self, V, edges, src):
+        #code here
+        infinity = 10**8
+        distances = [infinity]*V
+        distances[src] = 0
+        
+        for i in range(V-1):
+            for u, v, w in edges:
+                if distances[u] != infinity and distances[u] + w < distances[v]:
+                    distances[v] = distances[u] + w
+                    
+        for u, v, w in edges:
+            if distances[u] != infinity and distances[u] + w < distances[v]:
+                return [-1]
+                
+        return distances
+                
+                
