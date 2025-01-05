@@ -1,0 +1,112 @@
+"""
+2381. Shifting Letters II
+Solved
+1793
+Medium
+Topics
+Companies
+Hint
+You are given a string s of lowercase English letters and a 2D integer array shifts where shifts[i] = [starti, endi, directioni]. For every i, shift the characters in s from the index starti to the index endi (inclusive) forward if directioni = 1, or shift the characters backward if directioni = 0.
+
+Shifting a character forward means replacing it with the next letter in the alphabet (wrapping around so that 'z' becomes 'a'). Similarly, shifting a character backward means replacing it with the previous letter in the alphabet (wrapping around so that 'a' becomes 'z').
+
+Return the final string after all such shifts to s are applied.
+
+ 
+
+Example 1:
+
+Input: s = "abc", shifts = [[0,1,0],[1,2,1],[0,2,1]]
+Output: "ace"
+Explanation: Firstly, shift the characters from index 0 to index 1 backward. Now s = "zac".
+Secondly, shift the characters from index 1 to index 2 forward. Now s = "zbd".
+Finally, shift the characters from index 0 to index 2 forward. Now s = "ace".
+Example 2:
+
+Input: s = "dztz", shifts = [[0,0,0],[1,1,1]]
+Output: "catz"
+Explanation: Firstly, shift the characters from index 0 to index 0 backward. Now s = "cztz".
+Finally, shift the characters from index 1 to index 1 forward. Now s = "catz".
+ 
+
+Constraints:
+
+1 <= s.length, shifts.length <= 5 * 104
+shifts[i].length == 3
+0 <= starti <= endi < s.length
+0 <= directioni <= 1
+s consists of lowercase English letters.
+
+"""
+
+
+"""
+Approach
+1. so i have to shift values in a particular interval l to r by a value of shifts[2]
+2. if shifts[3] is 0 then shift backwards , if it is 1 then shift it forwards
+2. what i do is i use difference array technique 
+3. create 2 difference arrays , one for zeroes , another for ones 
+4. finally process the two arrays properly 
+5. then combine them , so that i can know that net shift for each index 
+6. after that add the ordinal of the letter at that index to the total net shift of that index 
+7. if it goes above 122 then use modulus for it and add 96 to it inorder to bring it to the range 96 to 122
+8. then append that chr value of that particular ordinal found out during the process of combinining the net shift 
+9. and the ordinal of the intitial letter at that particular index 
+"""
+
+
+
+
+
+
+class Solution:
+    def shiftingLetters(self, s: str, shifts: List[List[int]]) -> str:
+
+        zeroes = [0 for _ in range(len(s)+1)]
+        ones = [0 for _ in range(len(s)+1)]
+
+
+        for l,r,value in shifts:
+            if value==0:
+                zeroes[l]+=1
+                zeroes[r+1]-=1
+            else:
+                ones[l]+=1
+                ones[r+1]-=1
+        print(zeroes)
+        print(ones)
+        
+        for i in range(1,len(zeroes)):
+            zeroes[i] = zeroes[i] + zeroes[i-1]
+            ones[i] = ones[i] + ones[i-1]
+
+        
+        final = []
+
+        for i in range(len(zeroes)-1):
+            total = (ones[i] - zeroes[i])%26
+
+            final.append(total)
+
+        res = ''
+        print(final)
+
+        for i in range(len(s)):
+            total = (ord(s[i])+final[i])
+            if total>122:
+                res+=chr((total%122)+96)
+            else:
+                res+=chr(total)
+
+        return res
+        
+            
+            
+
+
+        
+
+
+
+
+        
