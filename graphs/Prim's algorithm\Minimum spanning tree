@@ -1,0 +1,111 @@
+#User function Template for python3
+from typing import List
+from heapq import heapify,heappop,heappush
+import heapq
+class Solution:
+    
+    """
+    Minimum spanning tree is a subgraph of a given graph , where MST doesn't contain any cycles , and it is a tree structure 
+    the formula to find the number of minimum spanning trees possible for a graph is (e(c)v-1) - no of cycles where e is no of edges , c is combination,v is number of vertices
+    """
+    
+    """
+    Approach
+    1. convert the given adjacency matrix into a dictionary , where the key is u , the value is a list 
+    2. the list is [cost,v] where cost is the cost of u-----v and v 
+    3. then use two data structures , visited set and min_heap 
+    4. in the min heap , store the value [0,0] where cost is from 0 to 0 is 0
+    5. so when in the loop which goes on until the length of visited is less than V
+    6. if that particular popped vertex is already visited , don't take that 
+    6. so pop the cost and vertex v , and add it to visited 
+    7. search for all the neighbours of the vertex popped currently , and make sure that the neighbour vertext is not visited 
+    8. and after that add the [cost,v] for that particular u into the heap 
+    9. finally return total cost 
+    """
+    
+    #Function to find sum of weights of edges of the Minimum Spanning Tree.
+    def spanningTree(self, V: int, adj: List[List[int]]) -> int:
+        
+        ad = {i:[] for i in range(V)}
+        
+        
+        
+        """
+        adj input format
+        [[[1, 5], [2, 1]], [[0, 5], [2, 3]], [[1, 3], [0, 1]]]
+        """
+        
+        
+        
+        
+        
+        total = 0
+        minimum = float('inf')
+        minind = 0
+        for i in range(len(adj)):
+            
+            for j in adj[i]:
+                ad[i].append(j[::-1])
+                
+        """
+        ad converted format
+        {0: [[5, 1], [1, 2]], 1: [[5, 0], [3, 2]], 2: [[3, 1], [1, 0]]}
+        """
+        
+        
+        
+        visited = set()
+        
+        min_heap = [[0,0]] # cost,vertex
+        
+        heapify(min_heap)
+        
+        
+        while len(visited)<V:
+            cost,vertex = heapq.heappop(min_heap)
+            
+            if vertex in visited:
+                continue
+
+            total+=cost
+            visited.add(vertex)
+            for neighbour_cost,neighbour_vertex in ad[vertex]:
+                if neighbour_vertex not in visited:
+                    heapq.heappush(min_heap,[neighbour_cost,neighbour_vertex])
+                    
+        return total 
+            
+            
+            
+        
+        
+        
+        
+
+
+#{ 
+ # Driver Code Starts
+#Initial Template for Python 3
+import atexit
+import io
+import sys
+from typing import List
+
+# Contributed by : Nagendra Jha
+
+if __name__ == '__main__':
+    test_cases = int(input())
+    for cases in range(test_cases):
+        V = int(input())
+        E = int(input())
+        adj = [[] for i in range(V)]
+        for i in range(E):
+            u, v, w = map(int, input().strip().split())
+            adj[u].append([v, w])
+            adj[v].append([u, w])
+        ob = Solution()
+
+        print(ob.spanningTree(V, adj))
+        print("~")
+
+# } Driver Code Ends
