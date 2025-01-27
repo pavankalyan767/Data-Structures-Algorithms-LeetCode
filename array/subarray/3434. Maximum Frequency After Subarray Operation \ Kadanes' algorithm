@@ -1,0 +1,94 @@
+"""
+3434. Maximum Frequency After Subarray Operation
+Solved
+Medium
+Topics
+Companies
+Hint
+You are given an array nums of length n. You are also given an integer k.
+
+You perform the following operation on nums once:
+
+Select a 
+subarray
+ nums[i..j] where 0 <= i <= j <= n - 1.
+Select an integer x and add x to all the elements in nums[i..j].
+Find the maximum frequency of the value k after the operation.
+
+ 
+
+Example 1:
+
+Input: nums = [1,2,3,4,5,6], k = 1
+
+Output: 2
+
+Explanation:
+
+After adding -5 to nums[2..5], 1 has a frequency of 2 in [1, 2, -2, -1, 0, 1].
+
+Example 2:
+
+Input: nums = [10,2,3,4,5,5,4,3,2,2], k = 10
+
+Output: 4
+
+Explanation:
+
+After adding 8 to nums[1..9], 10 has a frequency of 4 in [10, 10, 11, 12, 13, 13, 12, 11, 10, 10].
+
+ 
+
+Constraints:
+
+1 <= n == nums.length <= 105
+1 <= nums[i] <= 50
+1 <= k <= 50
+
+
+"""
+
+"""
+Approach
+1. so the point is to choose a number , and add it to a particular subsequence , and maximize the frequency of k in the array 
+2. if we add a particular number of whole array , then it isn't optimal , since we end up adding it to any ks present , and then that wouldn't be optimal 
+3. so the best way to get things done is , choose a subsequence where there is a high frequency of a particular number and less frequency of k 
+4. there we'll add a value to the number ie x then x+number = k , where x can range from -50to 50 
+5. since we have numbers from 1 to 50 , and i can add a number or subtract the number 
+6. so now use kadane's algorithm whenever i encounter k then i add -1 to cur_gain ,whenever i encounter x+number==k then i add 1 to cur_gain , and store it in a maximum variable 
+7. and one more thing is whenever cur_gain goes below 0 then bring it to 0 
+8. in the same way keep on doing for all the values , 
+9. record the maximum of max gains for all values ranging fro m-50 to 50 
+10. later add that to the existing frequency of k in the array and return it 
+
+"""
+
+
+
+
+class Solution:
+    def maxFrequency(self, nums: List[int], k: int) -> int:
+
+
+        frequency = Counter(nums)
+
+        maximum_till_now = 0
+        for i in range(-50,51):
+            cur_gain = 0
+            max_gain = 0
+            
+            for num in nums:
+                if num==k:
+                    cur_gain-=1
+                    max_gain = max(cur_gain,max_gain)
+                    if cur_gain<0:
+                        cur_gain = 0
+                elif num+i == k:
+                    cur_gain+=1
+                    max_gain = max(cur_gain,max_gain)
+                    if cur_gain<0:
+                        cur_gain = 0
+            
+            maximum_till_now = max(maximum_till_now,max_gain)
+            print(maximum_till_now,i)
+        return frequency[k]+maximum_till_now
